@@ -1,25 +1,26 @@
 <%@page import="java.sql.ResultSet"%>
 <jsp:include page="header.jsp"></jsp:include>
 <!DOCTYPE jsp:include PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<form action="/action_page.php">
+<form action="${pageContext.request.contextPath}/Controller">
   <div class="form-group">
     <label for="book">Book Name:</label>
-    <input type="text" class="form-control" >
+    <input type="text" name="bookname" class="form-control" >
   </div>
   <div class="form-group">
    <label for="author">Author:</label>
-    <input type="text" class="form-control" >
+    <input type="text"  name="author" class="form-control" >
   </div>
   <div class="form-group">
   <label for="category">Category:</label>
-    <input type="text" class="form-control" >
+    <input type="text"  name="category" class="form-control" >
   </div>
   <div class="form-group">
     <label for="price">Price:</label>
-    <input type="text" class="form-control" >
+    <input type="text" name="price" class="form-control" >
   </div>
   <div class="form-group">
   <button type="submit" class="btn btn-default">Submit</button>
+  <input type="hidden" name="page" value="submitBook"/>
   </div>
 </form>
 
@@ -76,4 +77,3 @@
   </table>
 
 <jsp:include page="footer.jsp"></jsp:include>
-
