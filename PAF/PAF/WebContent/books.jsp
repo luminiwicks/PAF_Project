@@ -1,4 +1,4 @@
-<%@page import="java.sql.ResultSet"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="header.jsp"></jsp:include>
 <!DOCTYPE jsp:include PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <form action="${pageContext.request.contextPath}/Controller">
@@ -33,46 +33,19 @@
         <th>Price</th>
         <th>Options</th>
       </tr>
+      
     </thead>
     <tbody>
-<%
-	ResultSet rs = (ResultSet)request.getAttribute("books");
-	while(rs.next()){
-		String name=rs.getString("bookname");
-		String author=rs.getString("author");
-		String cat=rs.getString("category");
-		String price=rs.getString("price");
-	
-	      out.println("<tr>");
-	      
-	      out.println("<td>");
-	      out.print(name);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(author);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(cat);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(price);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print("Update/Remove");
-	      out.println("</td>");
-	      
-	      
-	      
-	      out.println("</tr>");
-	      
-		
-	}
-
-%>
+    <c:forEach var="thebook" items="${Book_list}">
+    	<tr>
+    		<td>${thebook.name}</td>
+    		<td>${thebook.author}</td>
+    		<td>${thebook.category}</td>
+    		<td>${thebook.price}</td>
+    	
+    	</tr>
+    </c:forEach>
+    
 </tbody>
   </table>
 
