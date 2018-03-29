@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -14,22 +16,49 @@ import User.Book;
 
 public class DBCon {
 	private ResultSet users;
-	private ResultSet books;
+	private ResultSet rs;
 	
-	public ResultSet getBooks(DataSource dataSource) {
+	private DataSource datasource;
+	
+	public DBCon(DataSource thedatasource) {
+		datasource=thedatasource;
+	}
+	
+	public List<Book> getBooks() throws Exception {
+		
+		
+		List<Book> book=new ArrayList<>();
+		
+		
 		Connection conn;
 		Statement stmt;
 		
 		try {
-		conn=dataSource.getConnection();
+		conn=datasource.getConnection();
 		stmt = conn.createStatement();
 		String query= "Select * from book";
-		books =stmt.executeQuery(query);
+		rs =stmt.executeQuery(query);
+		
+		while(rs.next()) {
+			
+			String bname=rs.getString("bookname");
+			String author=rs.getString("author");
+			String category=rs.getString("category");
+			String price=rs.getString("price");
+			
+			Book thebook=new Book(bname, author, category, price);
+			
+			book.add(thebook);
+		}
+		
+		
+		  
 		}catch(Exception e) {
 			e.printStackTrace();
-			return books;
+			
 		}
-		return books;
+		return book;
+		
 		
 	}
 
@@ -73,5 +102,4 @@ public class DBCon {
 
 	}	}
 }
- 
  
