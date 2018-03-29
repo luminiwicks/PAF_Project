@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -21,16 +22,33 @@ import model.DBCon;
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	private DBCon dbcon;
 	
 	@Resource(name="jdbc/4CKBC") 
 	private DataSource dataSource;
+	
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
+	@Override
+	public void init() throws ServletException {
+		
+		super.init();
+		
+		try {
+			dbcon=new DBCon(dataSource);
+		} catch (Exception e) {
+			throw new ServletException();
+		}
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
 		String page; 
+		
+		
+		
+		
 		if(request.getParameterMap().containsKey("page")) {
 			
 			page=request.getParameter("page");
@@ -41,13 +59,16 @@ public class Controller extends HttpServlet {
 		
 		
 		if(page.equals("members")) {
-			ResultSet rs= new DBCon().getUsers(dataSource);
-			request.setAttribute("users",rs);
 			request.getRequestDispatcher("members.jsp").forward(request, response);
 		}else if(page.equals("books")) {
-			ResultSet rs= new DBCon().getBooks(dataSource);
-			request.setAttribute("books",rs);
-			request.getRequestDispatcher("books.jsp").forward(request, response);
+			try {
+				listtbooks(request,response);
+				request.getRequestDispatcher("books.jsp").forward(request, response);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+			
 		}else if(page.equals("home")) {
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 			
@@ -67,11 +88,21 @@ public class Controller extends HttpServlet {
 	
 		
 	}
+	
+	
+	private void listtbooks(HttpServletRequest request, Object res) throws Exception {
+
+            List<Book> book=dbcon.getBooks();
+            request.setAttribute("Book_list", book);
+		
+	}
+
+
 
 	private void SubmitBook(Book book, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-		new DBCon().addBook(book,dataSource);
+		dbcon.addBook(book,dataSource);
 		request.getRequestDispatcher("SubmitDone.jsp").forward(request, response);
 		
 		}catch(Exception e) {
