@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.PreparedStatement;
 
 import User.Book;
+import User.member;
 
 
 public class DBCon {
@@ -59,6 +60,49 @@ public class DBCon {
 			
 		}
 		return book;
+		
+		
+	}
+	
+      public List<member> getmember() throws Exception {
+		
+		
+		List<member> member1=new ArrayList<>();
+		
+		
+		Connection conn;
+		Statement stmt;
+		
+		try {
+		conn=datasource.getConnection();
+		stmt = conn.createStatement();
+		String query= "Select * from members";
+		rs =stmt.executeQuery(query);
+		
+		while(rs.next()) {
+			int member_id=rs.getInt(1);
+			String fullname=rs.getString(2);
+			String dob=rs.getString(3);
+			String paddress=rs.getString(4);
+			String caddress=rs.getString(5);
+			String mobile=rs.getString(6);
+			String homeno=rs.getString(7);
+			String password=rs.getString(8);
+			String email=rs.getString(9);
+			String nic=rs.getString(10);
+			
+			member themember=new member(fullname, dob, paddress, caddress, mobile, homeno, password, email, member_id,nic);
+					
+			member1.add(themember);
+		}
+		
+		
+		  
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		return member1;
 		
 		
 	}
@@ -156,6 +200,94 @@ public class DBCon {
 	
 		}
 	}
+	
+	public void deletebook(int book_id,DataSource datasourse) throws SQLException {
+		
+		Connection conn=null;
+		Statement stmt=null;
+		
+		try {
+			conn=datasource.getConnection();
+			stmt = conn.createStatement();
+			String query= "delete from book where bookid='"+book_id+"' ";
+			stmt.executeUpdate(query);
+		} finally {
+			conn.close();
+			stmt.close(); 
+		}
+		
+
+	}
+    public void deletemember(int member_id,DataSource datasourse) throws SQLException {
+		
+		Connection conn=null;
+		Statement stmt=null;
+		
+		try {
+			conn=datasource.getConnection();
+			stmt = conn.createStatement();
+			String query= "delete from members where memberiID='"+member_id+"' ";
+			stmt.executeUpdate(query);
+		} finally {
+			conn.close();
+			stmt.close(); 
+		}
+		
+
+	}
+    
+    public void login(String username,String password,DataSource datasourse) throws SQLException {
+    	
+    
+		
+	}
+
+	public void addMember(member mem, DataSource dataSource2) {
+		// TODO Auto-generated method stub
+		Connection conn=null;
+		Statement stmt=null;
+		
+		try {
+			conn=dataSource2.getConnection();
+			stmt=conn.createStatement();
+			String name=mem.getFullname();
+			String DOB=mem.getDob();
+			String paddress=mem.getPaddress();
+			String caddress=mem.getCaddress();
+			String mobile=mem.getMobile();
+			String home=mem.getHomenumber();
+			String email=mem.getEmail();
+			String nic=mem.getNic();
+			String password=mem.getPassword();
+
+			String query="insert into members(Fullname,dob,paddress,caddress,mobile,homeno,password,email,nic) "
+					+ "values('"+name+"','"+DOB+"','"+paddress+"','"+caddress+"','"+mobile+"','"+home+"','"+password+"','"+email+"','"+nic+"')";
+			String query2="insert into login(username,password,type) values('"+nic+"','"+password+"','User')";
+			stmt.execute(query);
+			stmt.execute(query2);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+	}
+	}
+
+	public void makeAdmin(int nic, DataSource dataSource2) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn=null;
+		Statement stmt=null;
+		
+		try {
+			conn=datasource.getConnection();
+			stmt = conn.createStatement();
+			String query=  "Update login set type='Admin' where username='"+nic+"'";
+			stmt.executeUpdate(query);
+		} finally {
+			conn.close();
+			stmt.close(); 
+		}
+	}
+	
 }
 
 

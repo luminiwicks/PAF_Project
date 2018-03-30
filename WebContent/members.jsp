@@ -1,4 +1,5 @@
 <%@page import="java.sql.ResultSet"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="header.jsp"></jsp:include>
 <!DOCTYPE jsp:include PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <table class="table table-striped">
@@ -16,67 +17,31 @@
       </tr>
     </thead>
     <tbody>
-<%
-	ResultSet rs = (ResultSet)request.getAttribute("users");
-	while(rs.next()){
-		String name=rs.getString("Fullname");
-		String dob=rs.getString("dob");
-		String padd=rs.getString("paddress");
-		String cadd=rs.getString("caddress");
-		String mobile=rs.getString("mobile");
-		String home=rs.getString("homeno");
-		String password=rs.getString("password");
-		String email=rs.getString("email");
-		String nic=rs.getString("nic");
-		
-		
-	      out.println("<tr>");
-	      
-	      out.println("<td>");
-	      out.print(name);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(dob);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(padd);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(cadd);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(mobile);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(home);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(email);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print(nic);
-	      out.println("</td>");
-	      
-	      out.println("<td>");
-	      out.print("Make As Community Admin");
-	      out.print("Update/Remove");
-	      out.println("</td>");
-	      
-	      
-	      
-	      out.println("</tr>");
-	      
-		
-	}
+    <c:forEach var="themember" items="${member_list}">
+ 
+    <c:url var="tempURL2" value="Controller">
+    <c:param name="page" value="deletemember"/>
+    <c:param name="member_id" value="${themember.member_id}"></c:param>
+    </c:url>
+     <c:url var="tempURL3" value="Controller">
+    <c:param name="page" value="makeAdmin"/>
+    <c:param name="nic" value="${themember.nic}"></c:param>
+    </c:url>
+    <tr>
+    		<td>${themember.fullname}</td>
+    		<td>${themember.dob}</td>
+    		<td>${themember.paddress}</td>
+    		<td>${themember.caddress}</td>
+    		<td>${themember.mobile}</td>
+    		<td>${themember.homenumber}</td>
+    		<td>${themember.email}</td>
+    		<td>${themember.nic}</td>
+    		<td><a href="${tempURL2}" onclick="if(!(confirm('Do You Want To Delete This member ?')))  return false">Delete</a> | 
+    			<a href="${tempURL3}" onclick="if(!(confirm('Do You Want To Make This member as an Admin ?')))  return false">Make Admin</a>
+    		</td>
+    </tr>
+    </c:forEach>
 
-%>
 </tbody>
   </table>
 <jsp:include page="footer.jsp"></jsp:include>

@@ -40,28 +40,30 @@
                       
             <div class="form">
               <img src="img/7.png"/>
-              <form class="register-form">
-                  <input type="text" placeholder="Full Name"/>
-                  <input type="text" placeholder="Date Of Birth"/>
-                  <input type="textarea" placeholder="Permnent Address"/>
-                   <input type="textarea" placeholder="Current Address"/>
-                   <input type="text" placeholder="Mobile Phone Number"/>
-                   <input type="text" placeholder="Home Telephone Number"/>
-                   <input type="text" placeholder="email Address"/>
-                  <input type="password" placeholder="Password"/>
-                  <input type="password" placeholder="Confirm Password"/>
+              <form class="register-form" action="${pageContext.request.contextPath}/Controller">
+                  <input type="text" placeholder="Full Name"  name="name" />
+                  <input type="text" placeholder="Date Of Birth" name="DOB" />
+                  <input type="textarea" placeholder="Permnent Address" name="paddress" />
+                   <input type="textarea" placeholder="Current Address" name="caddress" />
+                   <input type="text" placeholder="Mobile Phone Number" name="mobile" />
+                   <input type="text" placeholder="Home Telephone Number" name="home" />
+                   <input type="text" placeholder="email Address" name="email"/>
+                   <input type="text" placeholder="NIC" name="nic"/>
+                  <input type="password" placeholder="Password" name="password"/>
+                  
+                    <input type="hidden" name="page" value="submitMember"/>
                   <button>create</button>
                   <p class="message">Already registered? <a href="#">Sign In</a></p>
               </form>
-              <form class="login-form">
-                  <input type="text" placeholder="Username"/>
-                  <input type="password" placeholder="Password"/>
+              <form class="login-form" method="post" action="LoginServlet">
+                  <input type="text" placeholder="NIC Number" name="username"/>
+                  <input type="password" placeholder="Password" name="password"/>
                   <button>login</button>
                   <p class="message">Not registered? <a href="#">Create an account</a></p>
               </form>
 		        </div>
 		  
-
+			 <%=session.invalidate() %>
             <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
             <script  src="js/index.js"></script>
         </div>

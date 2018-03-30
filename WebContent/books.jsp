@@ -41,12 +41,23 @@
     <c:param name="page" value="updateBook"/>
     <c:param name="book_id" value="${thebook.book_id}"></c:param>
     </c:url>
+    
+    <c:url var="tempURL2" value="Controller">
+    <c:param name="page" value="deleteBook"/>
+    <c:param name="book_id" value="${thebook.book_id}"></c:param>
+    </c:url>
+    
+    
+    
     	<tr>
     		<td>${thebook.name}</td>
     		<td>${thebook.author}</td>
     		<td>${thebook.category}</td>
     		<td>${thebook.price}</td>
-    		<td><a href="${tempURL}">Update</a></td>
+    		<td><a href="${tempURL}">Update</a> |
+    		<a href="${tempURL2}" onclick="if(!(confirm('Do You Want To Delete This BooK ?')))  return false">Delete</a>
+    		
+    		</td>
     	
     	</tr>
     </c:forEach>
