@@ -39,7 +39,7 @@
 	  	<div class="col-lg-4">
                       
             <div class="form">
-              <img src="img/7.png"/>
+              <img src="img/8.png"/>
               <form class="register-form" action="${pageContext.request.contextPath}/Controller">
                   <input type="text" placeholder="Full Name"  name="name" />
                   <input type="text" placeholder="Date Of Birth" name="DOB" />
@@ -56,14 +56,14 @@
                   <p class="message">Already registered? <a href="#">Sign In</a></p>
               </form>
               <form class="login-form" method="post" action="LoginServlet">
-                  <input type="text" placeholder="NIC Number" name="username"/>
-                  <input type="password" placeholder="Password" name="password"/>
+                  <input type="text" placeholder="NIC Number" name="username" value="<%=request.getAttribute("username") %>"/>
+                  <input type="password" placeholder="Password" name="password" value="<%=request.getAttribute("password") %>"/>
                   <button>login</button>
                   <p class="message">Not registered? <a href="#">Create an account</a></p>
               </form>
 		        </div>
 		  
-			 <%=session.invalidate() %>
+			
             <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
             <script  src="js/index.js"></script>
         </div>

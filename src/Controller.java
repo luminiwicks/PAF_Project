@@ -1,5 +1,4 @@
 
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,7 +77,50 @@ public class Controller extends HttpServlet {
 				// TODO: handle exception
 			}
 
-			
+		}
+		else if(page.equals("adminmembers")) {
+			try {
+				listtmember(request, response);
+				request.getRequestDispatcher("Adminmember.jsp").forward(request, response);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+		}
+		else if(page.equals("adminbooks")) {
+			try {
+				listtbooks(request,response);
+				request.getRequestDispatcher("Adminbooks.jsp").forward(request, response);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+		}
+		else if(page.equals("Userhome")) {
+			try {
+				request.getRequestDispatcher("Userhome.jsp").forward(request, response);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+		}
+		else if(page.equals("Adminhome")) {
+			try {
+				request.getRequestDispatcher("Adminhome.jsp").forward(request, response);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+		}
+			else if(page.equals("Userbooks")) {
+				try {
+					listtbooks(request,response);
+					request.getRequestDispatcher("Userbooks.jsp").forward(request, response);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+
+				
 		}else if(page.equals("home")) {
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 			
@@ -114,7 +156,7 @@ public class Controller extends HttpServlet {
 			System.out.println("1"+book_id);
 			
 	}else if(page.equals("makeAdmin")) {
-		int nic=Integer.parseInt(request.getParameter("nic"));
+		String nic=request.getParameter("nic");
 		makeAdmin(nic,request,response);	
 	}
 		else if(page.equals("deleteBook")) {
@@ -154,7 +196,7 @@ public class Controller extends HttpServlet {
 	}
 	
 	
-	private void makeAdmin(int nic, HttpServletRequest request, HttpServletResponse response) {
+	private void makeAdmin(String nic, HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		try {
 			dbcon.makeAdmin(nic,dataSource);

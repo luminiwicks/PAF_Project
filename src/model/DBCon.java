@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.PreparedStatement;
 
 import User.Book;
+import User.logindata;
 import User.member;
 
 
@@ -272,7 +273,7 @@ public class DBCon {
 	}
 	}
 
-	public void makeAdmin(int nic, DataSource dataSource2) throws SQLException {
+	public void makeAdmin(String nic, DataSource dataSource2) throws SQLException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
 		Statement stmt=null;
@@ -288,6 +289,41 @@ public class DBCon {
 		}
 	}
 	
+	public String authentication(logindata logindata) {
+		 
+		String userName = logindata.getUserName();
+		String password = logindata.getPassword();
+		 
+		    Connection conn=null;
+			Statement stmt=null;
+		   
+		 try
+		 {
+			 	conn=datasource.getConnection();
+				stmt = conn.createStatement();
+				String query= "select * from login where username='"+userName+"' and password='"+password+"' ";
+			    rs=stmt.executeQuery(query);
+		 
+		 while(rs.next())
+		 {
+		 String usernameDB = rs.getString("username");
+		 String passwordDB = rs.getString("password");
+		 String typeDB = rs.getString("type");
+		 
+		 if(userName.equals(usernameDB) && password.equals(passwordDB) && typeDB.equals("Admin"))
+		 return "Admin_Role";
+		 else if(userName.equals(usernameDB) && password.equals(passwordDB) && typeDB.equals("owner"))
+		 return "owner_Role";
+		 else if(userName.equals(usernameDB) && password.equals(passwordDB) && typeDB.equals("User"))
+		 return "User_Role";
+		 }
+		 }
+		 catch(SQLException e)
+		 {
+		 e.printStackTrace();
+		 }
+		 return "Invalid user credentials";
+		}	
 }
 
 

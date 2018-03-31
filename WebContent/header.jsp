@@ -22,7 +22,7 @@
 	<div id="header">
 		<div class="section">
 			<div class="logo">
-				<a href="${pageContext.request.contextPath}/home.jsp"><img alt="4c Knowledge" src="img/Logo.png" ></a>
+				<a href="${pageContext.request.contextPath}/home.jsp"><img alt="4c Knowledge" src="img/Logo1.png" ></a>
 			</div>
 			<ul>
 				<li>
@@ -33,7 +33,7 @@
 				</li>
 				
 				<li>
-					<a href="${pageContext.request.contextPath}/index.jsp">Log-Out</a>
+					<a href="<%=request.getContextPath() %>/LoginServlet">Log-Out</a>
 				</li>
 			</ul>
 		</div>

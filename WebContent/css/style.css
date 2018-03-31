@@ -13,7 +13,7 @@
   text-align: center;
 }
 .form .thumbnail {
-  background: #3399ff;
+  background: #337ab7;
   width: 150px;
   height: 150px;
   margin: 0 auto 30px;
@@ -48,7 +48,7 @@
 }
 .form button {
   outline: 0;
-  background: #3399ff;
+  background: #337ab7;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -68,7 +68,7 @@
   font-size: 12px;
 }
 .form .message a {
-  color: #3399ff;
+  color: #337ab7;
   text-decoration: none;
 }
 .form .register-form {
@@ -106,7 +106,7 @@
   text-decoration: none;
 }
 .container .info span .fa {
-  color: #3399ff;
+  color: #337ab7;
 }
 
 /* END Form */

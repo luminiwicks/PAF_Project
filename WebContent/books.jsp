@@ -26,7 +26,7 @@
 
 <table class="table table-striped">
     <thead>
-      <tr>
+      <tr class="info">
         <th>Book Name</th>
         <th>Author</th>
         <th>Category</th>

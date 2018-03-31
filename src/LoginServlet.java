@@ -8,6 +8,7 @@ import java.sql.Statement;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,9 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import javax.websocket.Session;
 
+import User.logindata;
 import javafx.scene.control.Alert;
+import model.DBCon;
 
 /**
  * Servlet implementation class LoginServlet
@@ -47,13 +50,43 @@ public void init() throws ServletException {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+			
+		HttpSession session=request.getSession(false);
+		
+		if(session!=null) {
+			session.invalidate();
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+			System.out.println("log out");
+		}
+		
+		
+		Cookie[] cookies=request.getCookies();
+		String user="";
+		String pass="";
+		if(cookies!=null) {
+			try {
+				for (int i = 0; i < cookies.length; i++) {
+					Cookie cookie = cookies[i];
+					if(cookie.getValue().equalsIgnoreCase("username")) {
+						user=cookie.getValue();
+					}
+					if(cookie.getValue().equalsIgnoreCase("password")) {
+						 pass=cookie.getValue();
+					}
+				}
+				
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		request.setAttribute("username", user);
+		request.setAttribute("password", pass);
+		getServletContext().getRequestDispatcher("/index.jsp").include(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		System.out.println("111111111111111");
@@ -62,43 +95,119 @@ public void init() throws ServletException {
 		ResultSet rs=null;
 		
 		String uname =request.getParameter("username");
-
 		String pwd =request.getParameter("password");
+		
 		System.out.println(uname);
 		System.out.println(pwd);
+		
 		try {
-			conn=dataSource.getConnection();
-			stmt = conn.createStatement();
-			String query= "select * from login where username='"+uname+"' and password='"+pwd+"' ";
-		    rs=stmt.executeQuery(query);
-		    if(rs.next()) {
-		    	
-		    	if("owner".equals(rs.getString("type"))) {
-		    		System.out.println("test");
-		    		response.sendRedirect("home.jsp?name="+rs.getString("username"));
-		    		HttpSession httpSession = request.getSession();
-		    		httpSession.setAttribute("uname",uname);
-		    		
-		    	}
-		    	if("admin".equals(rs.getString("type"))) {
-		    		response.sendRedirect("admin.jsp?name="+rs.getString("username"));
-		    		HttpSession httpSession = request.getSession();
-		    		httpSession.setAttribute("uname",uname);
-		    		
-		    	}
-		    	if("user".equals(rs.getString("type"))) {
-		    		response.sendRedirect("user.jsp?name="+rs.getString("username"));
-		    		HttpSession httpSession = request.getSession();
-		    		httpSession.setAttribute("uname",uname);
-		    		
-		    	}	
-		    	}
-		    else {
-		    	request.getRequestDispatcher("/index.jsp").forward(request, response);
-		    	
-		    }
-		    
-		    System.out.println("sssssssssssssssssssssss");
+				
+			String user=request.getParameter("username");
+			String pass=request.getParameter("password");
+			
+			
+			Cookie cookie=null;
+			Cookie cookie1=null;
+			
+			Cookie[] cookies=request.getCookies();
+			
+			if(cookies!=null) {
+				try {
+					for (int i = 0; i < cookies.length; i++) {
+						Cookie cookiess = cookies[i];
+						if(cookiess.getValue().equalsIgnoreCase("username")) {
+							user=cookiess.getValue();
+						}
+						if(cookiess.getValue().equalsIgnoreCase("password")) {
+							 pass=cookiess.getValue();
+						}
+					}
+					
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+			if(cookie == null) {
+				cookie=new Cookie("username", String.valueOf(user));
+				cookie.setHttpOnly(true);
+				cookie.setComment("this cookie save the value of the username");
+			}
+			if(cookie1 == null) {
+				cookie1=new Cookie("password", String.valueOf(pass));
+				cookie.setHttpOnly(true);
+				cookie.setComment("this cookie save the value of the username");
+			}
+			cookie.setMaxAge(1*60*60);
+			response.addCookie(cookie);
+			cookie1.setMaxAge(1*60*60);
+			response.addCookie(cookie1);
+			
+			request.setAttribute("username", user);
+			request.setAttribute("password", pass);
+			getServletContext().getRequestDispatcher("/index.jsp").include(request, response);
+			
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				 
+			 logindata logindata = new logindata();
+			 
+			 logindata.setUserName(uname);
+			 logindata.setPassword(pwd);
+			 
+			 DBCon dbcon = new DBCon(dataSource);
+			 
+			 try
+			 {
+			 String userValidate = dbcon.authentication(logindata);
+			 
+			 if(userValidate.equals("Admin_Role"))
+			 {
+			 System.out.println("Admin's Home");
+			 
+			 HttpSession session = request.getSession(); //Creating a session
+			 session.setAttribute("Admin", uname); //setting session attribute
+			 request.setAttribute("userName", uname);
+			 
+			 request.getRequestDispatcher("/Adminhome.jsp").forward(request, response);
+			 }
+			 else if(userValidate.equals("owner_Role"))
+			 {
+			 System.out.println("owner's Home");
+			 
+			 HttpSession session = request.getSession();
+			 session.setAttribute("Editor", uname);
+			 request.setAttribute("userName", uname);
+			 
+			 request.getRequestDispatcher("/home.jsp").forward(request, response);
+			 }
+			 else if(userValidate.equals("User_Role"))
+			 {
+			 System.out.println("User's Home");
+			 
+			 HttpSession session = request.getSession();
+			 session.setMaxInactiveInterval(10*60);
+			 session.setAttribute("Student", uname);
+			 request.setAttribute("userName", uname);
+			 
+			 request.getRequestDispatcher("/Userhome.jsp").forward(request, response);
+			 }
+			 else
+			 {
+			 System.out.println("Error message = "+userValidate);
+			 request.setAttribute("errMessage", userValidate);
+			 
+			 request.getRequestDispatcher("/index.jsp").forward(request, response);
+			 }
+			 }
+			 catch (IOException e1)
+			 {
+			 e1.printStackTrace();
+			 }
+			 catch (Exception e2)
+			 {
+			 e2.printStackTrace();
+			 }
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

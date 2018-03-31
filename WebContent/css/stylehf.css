@@ -39,7 +39,6 @@ body {
 	width: 324px;
 }
 #header .section .logo a {
-	background: url(../images/bg-logo.png) repeat-x top left;
 	color: #fff;
 	display: block;
 	font-family: 'Arimo-Bold';
@@ -94,7 +93,7 @@ body {
 }
 #header .article {
 	background: #fff;
-	border: 2px solid #5fb3bd;
+	border: 2px solid #337ab7;
 	border-radius: 4px;
 	margin: 50px auto 28px;
 	overflow: hidden;
@@ -189,7 +188,7 @@ body {
 	width: 80px;
 }
 #body > .more:hover {
-	color: #4a8b92;
+	color: #337ab7;
 }
 #body h2 {
 	background: url(../images/bg-featured.png) repeat-x;
@@ -247,7 +246,7 @@ body {
 }
 #body div .featured {
 	background: #fff;
-	border: 5px solid #5fb3bd;
+	border: 5px solid #337ab7;
 	border-radius: 4px;
 	min-height: 450px;
 	padding: 45px 15px 15px;
@@ -541,7 +540,7 @@ body {
 	color: #4c8f97;
 }
 #footer {
-	background: #34b0bd;
+	background: #337ab7;
 	border-top: 1px solid #9bd9e0;
 	margin: 0;
 	padding: 0;
@@ -564,7 +563,7 @@ body {
 	text-align: center;
 }
 #footer div .connect {
-	background: #34b0bd;
+	background: #337ab7;
 	float: right;
 	height: 18px;
 	margin: 0 20px 0 150px;
